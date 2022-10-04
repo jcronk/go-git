@@ -61,7 +61,9 @@ func ReadPatterns(fs billy.Filesystem, path []string) (ps []Pattern, err error) 
 	for _, fi := range fis {
 		if fi.IsDir() && fi.Name() != gitDir {
 			var subps []Pattern
-			subps, err = ReadPatterns(fs, append(path, fi.Name()))
+			cpPath := make([]string, len(path))
+			copy(cpPath, path)
+			subps, err = ReadPatterns(fs, append(cpPath, fi.Name()))
 			if err != nil {
 				return
 			}
